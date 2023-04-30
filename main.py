@@ -4,6 +4,7 @@ clock = pygame.time.Clock()
 screen = pygame.display.set_mode((1200,659))
 pygame.display.set_caption('my game')
 pers_forward = pygame.image.load('sprites\pers\pers_forward_1_new.png')
+pers_back = pygame.image.load('sprites\pers\pers_back_1_new.png')
 fon_game = pygame.image.load('sprites\game_fon.png')
 # бежать вперед
 walk_forward = [
@@ -66,31 +67,41 @@ while running:
     elif keys[pygame.K_s]:
         screen.blit(walk_forward[player_anim_count], (player_x, player_y))
     # идти налево
-    if keys[pygame.K_a]:
+    if keys[pygame.K_a] and player_x >= 10:
         player_x -= player_speed
     # идти направо
-    elif keys[pygame.K_d]:
+    elif keys[pygame.K_d] and player_x <= 1139:
         player_x += player_speed
     # идти вперед
-    elif keys[pygame.K_w]:
+    elif keys[pygame.K_w] and player_y >= 10:
         player_y -= player_speed
-    #    идти назад
-    elif keys[pygame.K_s]:
+    # идти назад
+    elif keys[pygame.K_s] and player_y <= 570:
         player_y += player_speed
+    # идти влево и вперед 
+    if keys[pygame.K_a] and keys[pygame.K_w] and player_x >= 10 and player_y >= 10:
+        player_y -= 6
+        player_x -= 6
+    # идти вправо и направо
+    if keys[pygame.K_w] and keys[pygame.K_d] and player_x >= 10 and player_y >= 10:
+        player_y -= 6
+        player_x += 6
+    # идти вправо и вниз
+    if keys[pygame.K_d] and keys[pygame.K_s] and player_x >= 10 and player_y >= 10:
+        player_x += 6
+        player_y += 6
+    # идти влево и вниз
+    if keys[pygame.K_a] and keys[pygame.K_s] and player_x >= 10 and player_y >= 10:
+        player_y += 6
+        player_x -= 6
     # считает спрайты в списке чтобы они шли бесконечно
     if player_anim_count == 3:
         player_anim_count = 0
     else:
-        player_anim_count += 1
-    # создание монстра и его хотьбы
-    if monster_y >= 609:
-        monster_y += monster_speed
-        screen.blit(walk_back[player_anim_count], (monster_x, monster_y))
-    elif monster_y <= 50:
-        screen.blit(walk_forward[player_anim_count], (monster_x, monster_y))
-
+        player_anim_count += 1   
     pygame.display.update()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+            quit()
     clock.tick(10)
