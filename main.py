@@ -5,6 +5,8 @@ screen = pygame.display.set_mode((1200,659))
 pygame.display.set_caption('my game')
 pers_forward = pygame.image.load('sprites\pers\pers_forward_1_new.png')
 pers_back = pygame.image.load('sprites\pers\pers_back_1_new.png')
+pers_left = pygame.image.load('sprites\pers\pers_left_1_new.png')
+pers_right = pygame.image.load('sprites\pers\pers_right_1_new.png')
 fon_game = pygame.image.load('sprites\game_fon.png')
 # бежать вперед
 walk_forward = [
@@ -44,15 +46,23 @@ player_y = 329
 monster_speed = 15
 monster_x = 100
 monster_y = 50
-running = True
+# направление
+direction = 1
 # главный цикл
+running = True
 while running:
     # цвет экрана
     screen.blit(fon_game, (0, 0))
     # вывести изображение на экран
     # действие при нажатии на кнопку 
     keys = pygame.key.get_pressed()
-    if not keys[pygame.K_a] and not keys[pygame.K_d] and not keys[pygame.K_w] and not keys[pygame.K_s]:
+    if not keys[pygame.K_a] and not keys[pygame.K_d] and not keys[pygame.K_w] and not keys[pygame.K_s] and direction == 1:
+        screen.blit((pers_left), (player_x, player_y))
+    if not keys[pygame.K_a] and not keys[pygame.K_d] and not keys[pygame.K_w] and not keys[pygame.K_s] and direction == 2:
+        screen.blit((pers_right), (player_x, player_y))
+    if not keys[pygame.K_a] and not keys[pygame.K_d] and not keys[pygame.K_w] and not keys[pygame.K_s] and direction == 3:
+        screen.blit((pers_back), (player_x, player_y))
+    if not keys[pygame.K_a] and not keys[pygame.K_d] and not keys[pygame.K_w] and not keys[pygame.K_s] and direction == 4:
         screen.blit((pers_forward), (player_x, player_y))
     # спрайт налево
     if keys[pygame.K_a]:
@@ -69,15 +79,23 @@ while running:
     # идти налево
     if keys[pygame.K_a] and player_x >= 10:
         player_x -= player_speed
+        # направление
+        direction = 1
     # идти направо
     elif keys[pygame.K_d] and player_x <= 1139:
         player_x += player_speed
+        # направление
+        direction = 2
     # идти вперед
     elif keys[pygame.K_w] and player_y >= 10:
         player_y -= player_speed
+        # направление
+        direction = 3
     # идти назад
     elif keys[pygame.K_s] and player_y <= 570:
         player_y += player_speed
+        # направление
+        direction = 4
     # идти влево и вперед 
     if keys[pygame.K_a] and keys[pygame.K_w] and player_x >= 10 and player_y >= 10:
         player_y -= 6
